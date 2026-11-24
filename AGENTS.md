@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- The portfolio is a single page at `/` (src/routes/index.tsx); its images are served from `public/` by absolute path — keeps the imported GitHub layout intact.

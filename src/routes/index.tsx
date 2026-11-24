@@ -1,23 +1,171 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const portraitImg = "/tarini_portrait.jpeg";
+const brakeImg = "/hydraulic_disc_brake.png";
+const conveyorImg = "/automated_conveyor.png";
+const trinetraImg = "/trinetra_hud.png";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Tarini Prasad Pati — Mechanical Engineer & Web Developer" },
+      { name: "description", content: "Selected work, services and contact for Tarini Prasad Pati, mechanical engineering student and web developer from Odisha, India." },
+      { property: "og:title", content: "Tarini Prasad Pati — Mechanical Engineer & Web Developer" },
+      { property: "og:description", content: "Selected work, services and contact for Tarini Prasad Pati." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const projects: { title: string; cat: string; tag: string; img: string; desc: string; link?: string }[] = [
+  { title: "TRINETRA-TACTICAL", cat: "mech", tag: "Defense mechatronics", img: trinetraImg, desc: "Passive border surveillance proof-of-concept under ₹2,500 — ESP32 mesh nodes, piezo sensors & Flutter AR." },
+  { title: "Hydraulic Disc Brake & FEA", cat: "mech", tag: "Automotive CAD", img: brakeImg, desc: "SolidWorks model and ANSYS thermal-stress analysis under high-speed braking." },
+  { title: "Automated Conveyor System", cat: "mech", tag: "Mechatronics", img: conveyorImg, desc: "Belt conveyor with pneumatic pick-and-place, motor torque sizing and circuit design." },
+  { title: "Life RPG", cat: "code", tag: "★ Best · Live", img: "/life_rpg.jpg", link: "https://life-rpg-seven-nu.vercel.app", desc: "Gamified habit tracker that turns daily goals into an RPG with XP and levels." },
+  { title: "Kids Learning", cat: "code", tag: "★ Best · Live", img: "https://image.thum.io/get/width/1200/crop/900/https://kids-learning-red.vercel.app", link: "https://kids-learning-red.vercel.app", desc: "Colourful, playful learning app that helps young children learn by doing." },
+  { title: "Unique Chat", cat: "code", tag: "Web app", img: "https://tarini-profile.web.app/images/proj_unique_chat.jpg", desc: "Dual-panel real-time chat UI with AI prompt bar and custom dark theme." },
+  { title: "Spotify Web Clone", cat: "code", tag: "Clone", img: "https://images.unsplash.com/photo-1611339555312-e607c8352fd7?w=1000&q=80", desc: "Responsive music player with playback bar, playlists and visualizer layout." },
+  { title: "Smart To-Do List", cat: "code", tag: "Productivity", img: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1000&q=80", desc: "Task manager with categories, priority tags and auto-save." },
+];
+const GH = "https://github.com/tariniprasadpati67/";
+const services = [
+  ["01", "Mechanical Design", "3D CAD in SolidWorks & AutoCAD, FEA, kinematics and thermal analysis."],
+  ["02", "Mechatronics", "ESP32 sensor networks and automation prototypes on tight budgets."],
+  ["03", "Web Development", "Fast, mobile-first sites with HTML, CSS, JavaScript and modern UI."],
+  ["04", "Design & Media", "Visual assets in Canva and video editing in CapCut."],
+];
+const skills = ["SolidWorks", "ANSYS", "AutoCAD", "ESP32", "HTML5", "CSS3", "JavaScript", "Python", "Canva", "CapCut"];
+
 function Index() {
+  const [tab, setTab] = useState<"all" | "mech" | "code">("all");
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="min-h-screen">
+      <section className="hero-grid relative flex min-h-screen flex-col overflow-hidden px-6 py-6 text-primary-foreground md:px-10">
+        <nav className="flex items-center justify-between font-mono text-sm">
+          <span className="font-display text-lg font-bold">TPP®</span>
+          <div className="hidden gap-8 md:flex">
+            <a href="#about" className="hover:opacity-70">About</a>
+            <a href="#work" className="hover:opacity-70">Work</a>
+            <a href="#services" className="hover:opacity-70">Services</a>
+            <a href="#contact" className="hover:opacity-70">Contact</a>
+          </div>
+          <a href="#contact" className="rounded-full bg-secondary px-5 py-2 text-secondary-foreground transition hover:scale-105">Let's talk</a>
+        </nav>
+        <div className="pointer-events-none absolute right-4 bottom-0 w-[58vw] max-w-[300px] md:right-10 md:w-[36vw] md:max-w-[480px]">
+          <div className="overflow-hidden rounded-t-full border-2 border-primary-foreground/25 shadow-2xl">
+            <img src={portraitImg} alt="Tarini Prasad Pati" className="aspect-[4/5] w-full object-cover object-[50%_20%]" />
+          </div>
+        </div>
+        <div className="relative z-10 mt-auto pb-6">
+          <p className="animate-rise mb-6 max-w-sm font-mono text-sm opacity-90">
+            ● Open for opportunities — Mechanical engineering diploma student & web developer from Jajpur, Odisha.
+          </p>
+          <h1 className="animate-rise text-[17vw] leading-[0.82] font-extrabold tracking-tighter md:text-[13vw]" style={{ animationDelay: "0.15s" }}>
+            Tarini<br />Prasad Pati
+          </h1>
+        </div>
+      </section>
+
+      <div className="overflow-hidden border-y bg-accent py-5 text-accent-foreground">
+        <div className="animate-marquee flex w-max gap-10 text-3xl font-bold whitespace-nowrap">
+          {[...skills, ...skills].map((s, i) => <span key={i}>{s} ✦</span>)}
+        </div>
+      </div>
+
+      <section id="about" className="px-6 py-28 md:px-10">
+        <div className="mb-16 flex items-center gap-4 font-mono text-sm text-muted-foreground">
+          <span className="h-2 w-2 rounded-full bg-primary" /> About me <span className="h-px flex-1 bg-border" />
+        </div>
+        <div className="grid gap-16 lg:grid-cols-[1.4fr_1fr]">
+          <div>
+            <h2 className="text-4xl leading-[1.05] font-bold tracking-tight md:text-6xl">
+              Engineer by training,<br /><span className="text-primary">builder</span> by passion.
+            </h2>
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              I blend the analytical discipline of mechanical engineering with the creativity of modern web development — from CAD models and sensor networks to fast, responsive websites that work beautifully on every device.
+            </p>
+            <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-lg border bg-border md:grid-cols-4">
+              {[["5+", "Web projects"], ["5+", "Mech projects"], ["6+", "Technologies"], ["100%", "Drive"]].map(([n, l]) => (
+                <div key={l} className="bg-background p-6">
+                  <div className="text-4xl font-extrabold text-primary">{n}</div>
+                  <div className="mt-1 font-mono text-xs text-muted-foreground uppercase">{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-4">
+            {[["Present", "Diploma in Mechanical Engineering", "Engineering mechanics, structural design and strong logical foundations."], ["Ongoing", "Frontend & Full-Stack Development", "HTML5, responsive CSS Grid/Flexbox, JavaScript ES6 and project architecture."], ["Core", "Programming & Logic", "Algorithm design, Python fundamentals and interactive interfaces."]].map(([y, t, d]) => (
+              <div key={t} className="group rounded-lg border bg-card p-6 transition duration-300 hover:-translate-y-1 hover:border-primary">
+                <span className="rounded-full bg-muted px-3 py-1 font-mono text-xs text-muted-foreground transition group-hover:bg-primary group-hover:text-primary-foreground">{y}</span>
+                <h3 className="mt-4 text-xl font-bold">{t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+              </div>
+            ))}
+            <div className="flex items-center justify-between rounded-lg bg-secondary p-6 text-secondary-foreground">
+              <div><div className="font-mono text-xs opacity-60">Based in</div><div className="text-lg font-bold">Jajpur, Odisha</div></div>
+              <span className="rounded-full bg-primary px-3 py-1 font-mono text-xs text-primary-foreground">● Open to work</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="work" className="px-6 pb-28 md:px-10">
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="mb-3 font-mono text-sm text-muted-foreground">● Selected work</p>
+            <h2 className="text-5xl font-extrabold tracking-tight md:text-7xl">Projects</h2>
+          </div>
+          <div className="flex rounded-full border bg-card p-1 font-mono text-sm">
+            {([["all", "All projects (8)"], ["mech", "Mechanical"], ["code", "webprojects"]] as const).map(([k, l]) => (
+              <button key={k} onClick={() => setTab(k)} className={`rounded-full px-5 py-2 transition ${tab === k ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+                {l} <span className="opacity-60">({projects.filter((p) => p.cat === k).length})</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div key={tab} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {projects.filter((p) => tab === "all" || p.cat === tab).map((p, i) => (
+            <article key={p.title} className="animate-rise group overflow-hidden rounded-lg border bg-card transition duration-300 hover:-translate-y-1 hover:border-primary" style={{ animationDelay: `${i * 0.08}s` }}>
+              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                <span className="absolute top-4 left-4 rounded-full bg-background/80 px-3 py-1 font-mono text-xs backdrop-blur">{p.tag}</span>
+              </div>
+              <div className="p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-xl font-bold">{p.title}</h3>
+                  {p.link ? <a href={p.link} target="_blank" rel="noreferrer" aria-label={`Open ${p.title}`} className="text-primary transition group-hover:translate-x-1 group-hover:-translate-y-1">↗</a> : <span className="text-primary transition group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>}
+                </div>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
+                {p.link && <a href={p.link} target="_blank" rel="noreferrer" className="mt-4 inline-block font-mono text-xs text-primary hover:underline">Live demo ↗</a>}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="services" className="bg-secondary px-6 py-24 text-secondary-foreground md:px-10">
+        <h2 className="mb-12 text-5xl font-extrabold tracking-tight md:text-7xl">What I do</h2>
+        {services.map(([n, t, d]) => (
+          <div key={n} className="group grid grid-cols-[3rem_1fr] gap-4 border-t border-secondary-foreground/15 py-8 transition hover:pl-4 md:grid-cols-[6rem_1fr_1fr]">
+            <span className="font-mono text-sm">{n}</span>
+            <h3 className="text-3xl font-bold transition group-hover:text-primary md:text-4xl">{t}</h3>
+            <p className="col-start-2 opacity-70 md:col-start-3">{d}</p>
+          </div>
+        ))}
+      </section>
+
+      <section id="contact" className="hero-grid px-6 py-28 text-primary-foreground md:px-10">
+        <p className="font-mono text-sm">(Contact)</p>
+        <h2 className="mt-4 text-[14vw] leading-[0.85] font-extrabold tracking-tighter md:text-[10vw]">Let's work<br />together</h2>
+        <a href="mailto:t.tarini2009@gmail.com" className="mt-10 inline-block rounded-full bg-secondary px-8 py-4 text-lg font-bold text-secondary-foreground transition hover:scale-105">t.tarini2009@gmail.com →</a>
+        <div className="mt-20 flex flex-wrap justify-between gap-4 border-t border-primary-foreground/30 pt-6 font-mono text-sm">
+          <span>© 2026 Tarini Prasad Pati</span>
+          <div className="flex gap-6"><a href={GH} target="_blank" rel="noreferrer">GitHub</a></div>
+        </div>
+      </section>
+    </main>
   );
 }

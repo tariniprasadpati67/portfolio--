@@ -1,0 +1,8 @@
+[
+ {"capability":"code","source":"github:tariniprasadpati67/portfolio-","outcome":"migrate","status":"verified","next_action":"none"},
+ {"capability":"schema","source":"none detected","outcome":"not_applicable","status":"verified","next_action":"none"},
+ {"capability":"records","source":"none detected","outcome":"not_applicable","status":"verified","next_action":"none"},
+ {"capability":"auth","source":"none detected","outcome":"not_applicable","status":"verified","next_action":"none"},
+ {"capability":"external_providers","source":"external image/link URLs only","outcome":"preserve","status":"verified","next_action":"none"},
+ {"capability":"verification","source":"-","outcome":"migrate","status":"verified","next_action":"none"}
+]
