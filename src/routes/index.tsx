@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import portraitAsset from "@/assets/tarini_hero_portrait.webp.asset.json";
 
-const portraitImg = "/tarini_portrait.jpeg";
+const portraitImg = portraitAsset.url;
 const brakeImg = "/hydraulic_disc_brake.png";
 const conveyorImg = "/automated_conveyor.png";
 const trinetraImg = "/trinetra_hud.png";
@@ -38,12 +39,13 @@ const services = [
   ["04", "Design & Media", "Visual assets in Canva and video editing in CapCut."],
 ];
 const skills = ["SolidWorks", "ANSYS", "AutoCAD", "ESP32", "HTML5", "CSS3", "JavaScript", "Python", "Canva", "CapCut"];
+const crosses = [[25, 33], [50, 33], [75, 33], [25, 66], [50, 66], [75, 66]];
 
 function Index() {
   const [tab, setTab] = useState<"all" | "mech" | "code">("all");
   return (
     <main className="min-h-screen">
-      <section className="hero-grid relative flex min-h-screen flex-col overflow-hidden px-6 py-6 text-primary-foreground md:px-10">
+      <section className="hero-orange relative flex min-h-screen flex-col overflow-hidden px-6 py-6 text-primary-foreground md:px-10">
         <nav className="flex items-center justify-between font-mono text-sm">
           <span className="font-display text-lg font-bold">TPP®</span>
           <div className="hidden gap-8 md:flex">
@@ -54,13 +56,31 @@ function Index() {
           </div>
           <a href="#contact" className="rounded-full bg-secondary px-5 py-2 text-secondary-foreground transition hover:scale-105">Let's talk</a>
         </nav>
-        <div className="pointer-events-none absolute right-4 bottom-0 w-[58vw] max-w-[300px] md:right-10 md:w-[36vw] md:max-w-[480px]">
-          <div className="overflow-hidden rounded-t-full border-2 border-primary-foreground/25 shadow-2xl">
-            <img src={portraitImg} alt="Tarini Prasad Pati" className="aspect-[4/5] w-full object-cover object-[50%_20%]" />
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          {crosses.map(([x, y]) => (
+            <span key={`${x}-${y}`} className="absolute font-mono text-xs text-primary-foreground/40" style={{ left: `${x}%`, top: `${y}%` }}>+</span>
+          ))}
+        </div>
+        <span aria-hidden className="pointer-events-none absolute top-[20%] left-[6%] font-display text-[20vw] leading-none font-extrabold tracking-tighter text-hero-name/45 select-none md:text-[14vw]">TARINI</span>
+        <div className="pointer-events-none absolute right-[-6%] bottom-0 w-[64vw] max-w-[300px] md:right-2 md:w-[46vw] md:max-w-[520px] lg:right-8">
+          <img src={portraitImg} alt="Tarini Prasad Pati" className="w-full" />
+        </div>
+        <a href="https://life-rpg-seven-nu.vercel.app" target="_blank" rel="noreferrer" className="absolute top-[23%] right-4 hidden w-36 rounded-lg bg-secondary p-2 text-secondary-foreground shadow-xl transition hover:-translate-y-1 md:block lg:right-10 lg:w-44">
+          <img src="/life_rpg.jpg" alt="Life RPG" className="aspect-square w-full rounded-md object-cover" />
+          <div className="mt-2 font-mono text-[10px] opacity-60">@ Life RPG</div>
+          <div className="text-sm font-bold">Web app · Live</div>
+        </a>
+        <div className="absolute top-[54%] right-4 hidden w-72 items-center gap-3 rounded-xl bg-ink p-3 text-secondary lg:flex lg:right-10">
+          <img src={portraitImg} alt="" className="h-10 w-10 rounded-md object-cover object-[50%_25%]" />
+          <div className="min-w-0">
+            <div className="font-mono text-[10px] opacity-60">Let's talk</div>
+            <div className="truncate text-sm font-bold">Tarini Prasad Pati</div>
+            <div className="truncate font-mono text-[10px] opacity-70">Mechanical Engineer</div>
           </div>
+          <a href="mailto:t.tarini2009@gmail.com" aria-label="Email Tarini" className="ml-auto grid h-8 w-8 shrink-0 place-items-center rounded-md bg-secondary text-sm text-secondary-foreground">↗</a>
         </div>
         <div className="relative z-10 mt-auto pb-6">
-          <p className="animate-rise mb-6 max-w-sm font-mono text-sm opacity-90">
+          <p className="animate-rise mb-6 max-w-[15rem] font-mono text-sm opacity-90 md:max-w-sm">
             ● Open for opportunities — Mechanical engineering diploma student & web developer from Jajpur, Odisha.
           </p>
           <h1 className="animate-rise text-[17vw] leading-[0.82] font-extrabold tracking-tighter md:text-[13vw]" style={{ animationDelay: "0.15s" }}>

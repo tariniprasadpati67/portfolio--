@@ -23,6 +23,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-hero-orange: var(--hero-orange);
+  --color-hero-name: var(--hero-name);
+  --color-ink: var(--ink);
 }
 
 :root {
@@ -43,11 +46,23 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.6 0.2 35);
   --gradient-hero: linear-gradient(135deg, oklch(0.5 0.19 32), oklch(0.64 0.21 38));
+  /* studio-portrait backdrop: matches the orange the portrait is cut out on */
+  --hero-orange: oklch(0.635 0.1874 38.87);
+  --hero-name: oklch(0.5036 0.1701 35.09);
+  --ink: oklch(0.1776 0 0);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
   body { background: var(--color-background); color: var(--color-foreground); font-family: var(--font-display); }
+}
+
+@utility hero-orange {
+  background-color: var(--hero-orange);
+  background-image:
+    linear-gradient(oklch(1 0 0 / 10%) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(1 0 0 / 10%) 1px, transparent 1px);
+  background-size: 25% 33.33%, 25% 33.33%;
 }
 
 @utility hero-grid {
