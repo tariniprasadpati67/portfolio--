@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import portraitAsset from "@/assets/tarini_hero_portrait.webp.asset.json";
-
-const portraitImg = portraitAsset.url;
+// Using the local photo from public folder
+const portraitImg = "/tarini_portrait.jpeg";
 const brakeImg = "/hydraulic_disc_brake.png";
 const conveyorImg = "/automated_conveyor.png";
 const trinetraImg = "/trinetra_hud.png";
@@ -65,15 +64,6 @@ function Index() {
         <div className="pointer-events-none absolute right-[-6%] bottom-0 w-[64vw] max-w-[300px] md:right-2 md:w-[46vw] md:max-w-[520px] lg:right-8">
           <img src={portraitImg} alt="Tarini Prasad Pati" className="w-full" />
         </div>
-        <div className="absolute top-[54%] right-4 hidden w-72 items-center gap-3 rounded-xl bg-ink p-3 text-secondary lg:flex lg:right-10">
-          <img src={portraitImg} alt="" className="h-10 w-10 rounded-md object-cover object-[50%_25%]" />
-          <div className="min-w-0">
-            <div className="font-mono text-[10px] opacity-60">Let's talk</div>
-            <div className="truncate text-sm font-bold">Tarini Prasad Pati</div>
-            <div className="truncate font-mono text-[10px] opacity-70">Mechanical Engineer</div>
-          </div>
-          <a href="mailto:t.tarini2009@gmail.com" aria-label="Email Tarini" className="ml-auto grid h-8 w-8 shrink-0 place-items-center rounded-md bg-secondary text-sm text-secondary-foreground">↗</a>
-        </div>
         <div className="relative z-10 mt-auto pb-6">
           <p className="animate-rise mb-6 max-w-[15rem] font-mono text-sm opacity-90 md:max-w-sm">
             ● Open for opportunities — Mechanical engineering diploma student & web developer from Jajpur, Odisha.
@@ -134,11 +124,18 @@ function Index() {
             <h2 className="text-5xl font-extrabold tracking-tight md:text-7xl">Projects</h2>
           </div>
           <div className="flex rounded-full border bg-card p-1 font-mono text-sm">
-            {([["all", "All projects (8)"], ["mech", "Mechanical"], ["code", "webprojects"]] as const).map(([k, l]) => (
-              <button key={k} onClick={() => setTab(k)} className={`rounded-full px-5 py-2 transition ${tab === k ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-                {l} <span className="opacity-60">({projects.filter((p) => p.cat === k).length})</span>
-              </button>
-            ))}
+            {([["all", "All projects"], ["mech", "Mechanical"], ["code", "Web projects"]] as const).map(([k, l]) => {
+              const count = k === "all" ? projects.length : projects.filter((p) => p.cat === k).length;
+              return (
+                <button
+                  key={k}
+                  onClick={() => setTab(k)}
+                  className={`rounded-full px-5 py-2 transition ${tab === k ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                >
+                  {l} <span className="opacity-60">({count})</span>
+                </button>
+              );
+            })}
           </div>
         </div>
         <div key={tab} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
