@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import portraitAsset from "@/assets/tarini_hero_portrait.webp.asset.json";
+import talkAsset from "@/assets/tarini_talk.jpg.asset.json";
 
 const portraitImg = portraitAsset.url;
 const brakeImg = "/hydraulic_disc_brake.png";
@@ -112,6 +113,9 @@ function Index() {
             </div>
           </div>
           <div className="space-y-4">
+            <figure className="overflow-hidden rounded-lg border bg-card">
+              <img src={talkAsset.url} alt="Tarini Prasad Pati speaking at a podium in a seminar hall" loading="lazy" className="w-full" />
+            </figure>
             {[["Present", "Diploma in Mechanical Engineering", "Engineering mechanics, structural design and strong logical foundations."], ["Ongoing", "Frontend & Full-Stack Development", "HTML5, responsive CSS Grid/Flexbox, JavaScript ES6 and project architecture."], ["Core", "Programming & Logic", "Algorithm design, Python fundamentals and interactive interfaces."]].map(([y, t, d]) => (
               <div key={t} className="group rounded-lg border bg-card p-6 transition duration-300 hover:-translate-y-1 hover:border-primary">
                 <span className="rounded-full bg-muted px-3 py-1 font-mono text-xs text-muted-foreground transition group-hover:bg-primary group-hover:text-primary-foreground">{y}</span>
