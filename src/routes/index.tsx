@@ -44,7 +44,7 @@ function Index() {
   const [tab, setTab] = useState<"all" | "mech" | "code">("all");
   return (
     <main className="min-h-screen">
-      <section className="hero-orange relative flex min-h-screen flex-col overflow-hidden px-6 py-6 text-primary-foreground md:px-10">
+      <section className="hero-orange relative flex min-h-[82vh] md:min-h-screen flex-col overflow-hidden px-6 pt-5 pb-6 text-primary-foreground md:px-10 md:py-6">
         <nav className="flex items-center justify-between font-mono text-sm">
           <span className="font-display text-lg font-bold">TPP®</span>
           <div className="hidden gap-8 md:flex">
@@ -60,12 +60,12 @@ function Index() {
             <span key={`${x}-${y}`} className="absolute font-mono text-xs text-primary-foreground/40" style={{ left: `${x}%`, top: `${y}%` }}>+</span>
           ))}
         </div>
-        <span aria-hidden className="pointer-events-none absolute top-[20%] left-[6%] font-display text-[20vw] leading-none font-extrabold tracking-tighter text-hero-name/45 select-none md:text-[14vw]">TARINI</span>
-        <div className="pointer-events-none absolute right-[-6%] bottom-0 w-[64vw] max-w-[300px] md:right-2 md:w-[46vw] md:max-w-[520px] lg:right-8">
+        <span aria-hidden className="pointer-events-none absolute top-[16%] left-[6%] font-display text-[22vw] leading-none font-extrabold tracking-tighter text-hero-name/45 select-none md:top-[20%] md:text-[14vw]">TARINI</span>
+        <div className="pointer-events-none absolute right-[-4%] bottom-0 w-[76vw] max-w-[340px] md:right-2 md:w-[46vw] md:max-w-[520px] lg:right-8">
           <img src={portraitImg} alt="Tarini Prasad Pati" className="w-full" />
         </div>
-        <div className="relative z-10 mt-auto pb-6">
-          <p className="animate-rise mb-6 max-w-[15rem] font-mono text-sm opacity-90 md:max-w-sm">
+        <div className="relative z-10 mt-auto pb-3 md:pb-6">
+          <p className="animate-rise mb-4 max-w-[16rem] font-mono text-sm opacity-90 md:mb-6 md:max-w-sm">
             ● Open for opportunities — Mechanical engineering diploma student & web developer from Jajpur, Odisha.
           </p>
           <h1 className="animate-rise text-[17vw] leading-[0.82] font-extrabold tracking-tighter md:text-[13vw]" style={{ animationDelay: "0.15s" }}>
