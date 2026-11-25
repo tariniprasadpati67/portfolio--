@@ -65,9 +65,6 @@ function Index() {
           <img src={portraitImg} alt="Tarini Prasad Pati" className="w-full" />
         </div>
         <div className="relative z-10 mt-auto pb-3 md:pb-6">
-          <p className="animate-rise mb-4 max-w-[16rem] font-mono text-sm opacity-90 md:mb-6 md:max-w-sm">
-            ● Open for opportunities — Mechanical engineering diploma student & web developer from Jajpur, Odisha.
-          </p>
           <h1 className="animate-rise text-[17vw] leading-[0.82] font-extrabold tracking-tighter md:text-[13vw]" style={{ animationDelay: "0.15s" }}>
             Tarini<br />Prasad Pati
           </h1>
@@ -81,6 +78,9 @@ function Index() {
       </div>
 
       <section id="about" className="px-6 py-28 md:px-10">
+        <p className="mb-10 max-w-2xl font-mono text-sm leading-relaxed text-foreground/85 md:text-base">
+          <span className="text-primary font-bold">●</span> Open for opportunities — Mechanical engineering diploma student & web developer from Jajpur, Odisha.
+        </p>
         <div className="mb-16 flex items-center gap-4 font-mono text-sm text-muted-foreground">
           <span className="h-2 w-2 rounded-full bg-primary" /> About me <span className="h-px flex-1 bg-border" />
         </div>
