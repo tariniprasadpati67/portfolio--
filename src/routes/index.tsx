@@ -65,11 +65,6 @@ function Index() {
         <div className="pointer-events-none absolute right-[-6%] bottom-0 w-[64vw] max-w-[300px] md:right-2 md:w-[46vw] md:max-w-[520px] lg:right-8">
           <img src={portraitImg} alt="Tarini Prasad Pati" className="w-full" />
         </div>
-        <a href="https://life-rpg-seven-nu.vercel.app" target="_blank" rel="noreferrer" className="absolute top-[23%] right-4 hidden w-36 rounded-lg bg-secondary p-2 text-secondary-foreground shadow-xl transition hover:-translate-y-1 md:block lg:right-10 lg:w-44">
-          <img src="/life_rpg.jpg" alt="Life RPG" className="aspect-square w-full rounded-md object-cover" />
-          <div className="mt-2 font-mono text-[10px] opacity-60">@ Life RPG</div>
-          <div className="text-sm font-bold">Web app · Live</div>
-        </a>
         <div className="absolute top-[54%] right-4 hidden w-72 items-center gap-3 rounded-xl bg-ink p-3 text-secondary lg:flex lg:right-10">
           <img src={portraitImg} alt="" className="h-10 w-10 rounded-md object-cover object-[50%_25%]" />
           <div className="min-w-0">
