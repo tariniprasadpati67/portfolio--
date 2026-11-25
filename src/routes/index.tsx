@@ -113,7 +113,7 @@ function Index() {
             </div>
           </div>
           <div className="space-y-4">
-            <figure className="overflow-hidden rounded-lg border bg-card">
+            <figure className="mx-auto w-[72%] overflow-hidden rounded-lg border bg-card">
               <img src={talkAsset.url} alt="Tarini Prasad Pati speaking at a podium in a seminar hall" loading="lazy" className="w-full" />
             </figure>
             {[["Present", "Diploma in Mechanical Engineering", "Engineering mechanics, structural design and strong logical foundations."], ["Ongoing", "Frontend & Full-Stack Development", "HTML5, responsive CSS Grid/Flexbox, JavaScript ES6 and project architecture."], ["Core", "Programming & Logic", "Algorithm design, Python fundamentals and interactive interfaces."]].map(([y, t, d]) => (
