@@ -42,6 +42,7 @@ const crosses = [[25, 33], [50, 33], [75, 33], [25, 66], [50, 66], [75, 66]];
 
 function Index() {
   const [tab, setTab] = useState<"all" | "mech" | "code">("all");
+  const [activeService, setActiveService] = useState<string | null>(null);
   return (
     <main className="min-h-screen">
       <section className="hero-orange relative flex min-h-[82vh] md:min-h-screen flex-col overflow-hidden px-6 pt-5 pb-6 text-primary-foreground md:px-10 md:py-6">
@@ -160,13 +161,28 @@ function Index() {
 
       <section id="services" className="bg-secondary px-6 py-24 text-secondary-foreground md:px-10">
         <h2 className="mb-12 text-5xl font-extrabold tracking-tight md:text-7xl">What I do</h2>
-        {services.map(([n, t, d]) => (
-          <div key={n} className="group grid grid-cols-[3rem_1fr] gap-4 border-t border-secondary-foreground/15 py-8 transition hover:pl-4 md:grid-cols-[6rem_1fr_1fr]">
-            <span className="font-mono text-sm">{n}</span>
-            <h3 className="text-3xl font-bold transition group-hover:text-primary md:text-4xl">{t}</h3>
-            <p className="col-start-2 opacity-70 md:col-start-3">{d}</p>
-          </div>
-        ))}
+        {services.map(([n, t, d]) => {
+          const isActive = activeService === n;
+          return (
+            <div
+              key={n}
+              role="button"
+              tabIndex={0}
+              onClick={() => setActiveService(isActive ? null : (n ?? null))}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setActiveService(isActive ? null : (n ?? null));
+                }
+              }}
+              className={`group grid cursor-pointer grid-cols-[3rem_1fr] gap-4 border-t border-secondary-foreground/15 py-8 transition active:pl-4 hover:pl-4 md:grid-cols-[6rem_1fr_1fr] ${isActive ? "pl-4" : ""}`}
+            >
+              <span className="font-mono text-sm">{n}</span>
+              <h3 className={`text-3xl font-bold transition group-active:text-primary group-hover:text-primary md:text-4xl ${isActive ? "text-primary" : ""}`}>{t}</h3>
+              <p className="col-start-2 opacity-70 md:col-start-3">{d}</p>
+            </div>
+          );
+        })}
       </section>
 
       <section id="contact" className="hero-grid px-6 py-28 text-primary-foreground md:px-10">
