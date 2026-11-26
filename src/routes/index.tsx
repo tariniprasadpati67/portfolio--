@@ -42,6 +42,8 @@ const crosses = [[25, 33], [50, 33], [75, 33], [25, 66], [50, 66], [75, 66]];
 
 function Index() {
   const [tab, setTab] = useState<"all" | "mech" | "code">("all");
+  const [activeAbout, setActiveAbout] = useState<string | null>(null);
+  const [activeProject, setActiveProject] = useState<string | null>(null);
   const [activeService, setActiveService] = useState<string | null>(null);
   return (
     <main className="min-h-screen">
@@ -103,13 +105,28 @@ function Index() {
             </div>
           </div>
           <div className="space-y-4">
-            {[["Present", "Diploma in Mechanical Engineering", "Engineering mechanics, structural design and strong logical foundations."], ["Ongoing", "Frontend & Full-Stack Development", "HTML5, responsive CSS Grid/Flexbox, JavaScript ES6 and project architecture."], ["Core", "Programming & Logic", "Algorithm design, Python fundamentals and interactive interfaces."]].map(([y, t, d]) => (
-              <div key={t} className="group rounded-lg border bg-card p-6 transition duration-300 hover:-translate-y-1 hover:border-primary">
-                <span className="rounded-full bg-muted px-3 py-1 font-mono text-xs text-muted-foreground transition group-hover:bg-primary group-hover:text-primary-foreground">{y}</span>
-                <h3 className="mt-4 text-xl font-bold">{t}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{d}</p>
-              </div>
-            ))}
+            {([["Present", "Diploma in Mechanical Engineering", "Engineering mechanics, structural design and strong logical foundations."], ["Ongoing", "Frontend & Full-Stack Development", "HTML5, responsive CSS Grid/Flexbox, JavaScript ES6 and project architecture."], ["Core", "Programming & Logic", "Algorithm design, Python fundamentals and interactive interfaces."]] as const).map(([y, t, d]) => {
+              const isActive = activeAbout === t;
+              return (
+                <div
+                  key={t}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setActiveAbout(isActive ? null : t)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActiveAbout(isActive ? null : t);
+                    }
+                  }}
+                  className={`group cursor-pointer rounded-lg border bg-card p-6 transition duration-300 active:-translate-y-1 active:border-primary hover:-translate-y-1 hover:border-primary ${isActive ? "-translate-y-1 border-primary" : ""}`}
+                >
+                  <span className={`rounded-full px-3 py-1 font-mono text-xs transition group-active:bg-primary group-active:text-primary-foreground group-hover:bg-primary group-hover:text-primary-foreground ${isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{y}</span>
+                  <h3 className="mt-4 text-xl font-bold">{t}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+                </div>
+              );
+            })}
             <div className="flex items-center justify-between rounded-lg bg-secondary p-6 text-secondary-foreground">
               <div><div className="font-mono text-xs opacity-60">Based in</div><div className="text-lg font-bold">Jajpur, Odisha</div></div>
               <span className="rounded-full bg-primary px-3 py-1 font-mono text-xs text-primary-foreground">● Open to work</span>
@@ -140,22 +157,30 @@ function Index() {
           </div>
         </div>
         <div key={tab} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.filter((p) => tab === "all" || p.cat === tab).map((p, i) => (
-            <article key={p.title} className="animate-rise group overflow-hidden rounded-lg border bg-card transition duration-300 hover:-translate-y-1 hover:border-primary" style={{ animationDelay: `${i * 0.08}s` }}>
-              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                <span className="absolute top-4 left-4 rounded-full bg-background/80 px-3 py-1 font-mono text-xs backdrop-blur">{p.tag}</span>
-              </div>
-              <div className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-xl font-bold">{p.title}</h3>
-                  {p.link ? <a href={p.link} target="_blank" rel="noreferrer" aria-label={`Open ${p.title}`} className="text-primary transition group-hover:translate-x-1 group-hover:-translate-y-1">↗</a> : <span className="text-primary transition group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>}
+          {projects.filter((p) => tab === "all" || p.cat === tab).map((p, i) => {
+            const isActive = activeProject === p.title;
+            return (
+              <article
+                key={p.title}
+                onClick={() => setActiveProject(isActive ? null : p.title)}
+                className={`animate-rise group cursor-pointer overflow-hidden rounded-lg border bg-card transition duration-300 active:-translate-y-1 active:border-primary hover:-translate-y-1 hover:border-primary ${isActive ? "-translate-y-1 border-primary" : ""}`}
+                style={{ animationDelay: `${i * 0.08}s` }}
+              >
+                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                  <img src={p.img} alt={p.title} loading="lazy" className={`h-full w-full object-cover transition duration-700 group-active:scale-105 group-hover:scale-105 ${isActive ? "scale-105" : ""}`} />
+                  <span className="absolute top-4 left-4 rounded-full bg-background/80 px-3 py-1 font-mono text-xs backdrop-blur">{p.tag}</span>
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
-                {p.link && <a href={p.link} target="_blank" rel="noreferrer" className="mt-4 inline-block font-mono text-xs text-primary hover:underline">Live demo ↗</a>}
-              </div>
-            </article>
-          ))}
+                <div className="p-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-xl font-bold">{p.title}</h3>
+                    {p.link ? <a href={p.link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} aria-label={`Open ${p.title}`} className={`text-primary transition group-active:translate-x-1 group-active:-translate-y-1 group-hover:translate-x-1 group-hover:-translate-y-1 ${isActive ? "translate-x-1 -translate-y-1" : ""}`}>↗</a> : <span className={`text-primary transition group-active:translate-x-1 group-active:-translate-y-1 group-hover:translate-x-1 group-hover:-translate-y-1 ${isActive ? "translate-x-1 -translate-y-1" : ""}`}>↗</span>}
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
+                  {p.link && <a href={p.link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="mt-4 inline-block font-mono text-xs text-primary hover:underline">Live demo ↗</a>}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
