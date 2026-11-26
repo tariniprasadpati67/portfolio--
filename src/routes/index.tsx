@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Using the local photo from public folder
 const portraitImg = "/tarini_portrait.jpeg";
 const brakeImg = "/hydraulic_disc_brake.png";
@@ -19,6 +19,13 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
+
+const navLinks = [
+  { href: "#about", label: "About" },
+  { href: "#work", label: "Work" },
+  { href: "#services", label: "Services" },
+  { href: "#contact", label: "Contact" },
+];
 
 const projects: { title: string; cat: string; tag: string; img: string; desc: string; link?: string }[] = [
   { title: "TRINETRA-TACTICAL", cat: "mech", tag: "Defense mechatronics", img: trinetraImg, desc: "Passive border surveillance proof-of-concept under ₹2,500 — ESP32 mesh nodes, piezo sensors & Flutter AR." },
@@ -42,19 +49,143 @@ const crosses = [[25, 33], [50, 33], [75, 33], [25, 66], [50, 66], [75, 66]];
 
 function Index() {
   const [tab, setTab] = useState<"all" | "mech" | "code">("all");
+  const [activeSection, setActiveSection] = useState<string>("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    // ScrollSpy to track active section across all browsers including Instagram IAB
+    const sections = ["about", "work", "services", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const id = href.replace("#", "");
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(id);
+      setMobileMenuOpen(false);
+      try {
+        window.history.pushState(null, "", href);
+      } catch {}
+    }
+  };
+
   return (
     <main className="min-h-screen">
       <section className="hero-orange relative flex min-h-[82vh] md:min-h-screen flex-col overflow-hidden px-6 pt-5 pb-6 text-primary-foreground md:px-10 md:py-6">
-        <nav className="flex items-center justify-between font-mono text-sm">
-          <span className="font-display text-lg font-bold">TPP®</span>
+        <nav className="relative z-30 flex items-center justify-between font-mono text-sm">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setActiveSection("");
+            }}
+            className="font-display text-lg font-bold text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            TPP®
+          </a>
+
+          {/* Desktop & Tablet Links with Orange Underline Interaction */}
           <div className="hidden gap-8 md:flex">
-            <a href="#about" className="hover:opacity-70">About</a>
-            <a href="#work" className="hover:opacity-70">Work</a>
-            <a href="#services" className="hover:opacity-70">Services</a>
-            <a href="#contact" className="hover:opacity-70">Contact</a>
+            {navLinks.map((link) => {
+              const id = link.href.replace("#", "");
+              const isActive = activeSection === id;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={`nav-orange-link transition-colors duration-200 ${
+                    isActive
+                      ? "is-active font-semibold text-primary-foreground"
+                      : "text-primary-foreground/80 hover:text-primary-foreground"
+                  }`}
+                >
+                  {link.label}
+                  <span className="orange-underline" />
+                </a>
+              );
+            })}
           </div>
-          <a href="#contact" className="rounded-full bg-secondary px-5 py-2 text-secondary-foreground transition hover:scale-105">Let's talk</a>
+
+          <div className="flex items-center gap-3">
+            <a
+              href="#contact"
+              onClick={(e) => handleNavClick(e, "#contact")}
+              className="rounded-full bg-secondary px-5 py-2 text-secondary-foreground transition hover:scale-105"
+            >
+              Let's talk
+            </a>
+
+            {/* Mobile menu toggle for Android/iOS in-app browsers */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              className="grid h-9 w-9 place-items-center rounded-lg border border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground transition-colors hover:bg-primary-foreground/20 md:hidden"
+            >
+              {mobileMenuOpen ? (
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+          </div>
         </nav>
+
+        {/* Mobile dropdown menu with orange underline interaction */}
+        {mobileMenuOpen && (
+          <div className="animate-rise relative z-30 mt-3 rounded-xl border border-primary-foreground/20 bg-ink/95 p-4 shadow-xl backdrop-blur-md md:hidden">
+            <div className="flex flex-col gap-2 font-mono text-sm">
+              {navLinks.map((link) => {
+                const id = link.href.replace("#", "");
+                const isActive = activeSection === id;
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`nav-orange-link py-2 text-base ${
+                      isActive
+                        ? "is-active font-bold text-primary-foreground"
+                        : "text-primary-foreground/80 hover:text-primary-foreground"
+                    }`}
+                  >
+                    {link.label}
+                    <span className="orange-underline" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        )}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           {crosses.map(([x, y]) => (
             <span key={`${x}-${y}`} className="absolute font-mono text-xs text-primary-foreground/40" style={{ left: `${x}%`, top: `${y}%` }}>+</span>
@@ -77,7 +208,7 @@ function Index() {
         </div>
       </div>
 
-      <section id="about" className="px-6 py-28 md:px-10">
+      <section id="about" className="scroll-mt-16 px-6 py-28 md:px-10">
         <p className="mb-10 max-w-2xl font-mono text-sm leading-relaxed text-foreground/85 md:text-base">
           <span className="text-primary font-bold">●</span> Open for opportunities — Mechanical engineering diploma student & web developer from Jajpur, Odisha.
         </p>
@@ -117,7 +248,7 @@ function Index() {
         </div>
       </section>
 
-      <section id="work" className="px-6 pb-28 md:px-10">
+      <section id="work" className="scroll-mt-16 px-6 pb-28 md:px-10">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="mb-3 font-mono text-sm text-muted-foreground">● Selected work</p>
@@ -158,7 +289,7 @@ function Index() {
         </div>
       </section>
 
-      <section id="services" className="bg-secondary px-6 py-24 text-secondary-foreground md:px-10">
+      <section id="services" className="scroll-mt-16 bg-secondary px-6 py-24 text-secondary-foreground md:px-10">
         <h2 className="mb-12 text-5xl font-extrabold tracking-tight md:text-7xl">What I do</h2>
         {services.map(([n, t, d]) => (
           <div key={n} className="group grid grid-cols-[3rem_1fr] gap-4 border-t border-secondary-foreground/15 py-8 transition hover:pl-4 md:grid-cols-[6rem_1fr_1fr]">
@@ -169,7 +300,7 @@ function Index() {
         ))}
       </section>
 
-      <section id="contact" className="hero-grid px-6 py-28 text-primary-foreground md:px-10">
+      <section id="contact" className="scroll-mt-16 hero-grid px-6 py-28 text-primary-foreground md:px-10">
         <p className="font-mono text-sm">(Contact)</p>
         <h2 className="mt-4 text-[14vw] leading-[0.85] font-extrabold tracking-tighter md:text-[10vw]">Let's work<br />together</h2>
         <a href="mailto:t.tarini2009@gmail.com" className="mt-10 inline-block rounded-full bg-secondary px-8 py-4 text-lg font-bold text-secondary-foreground transition hover:scale-105">t.tarini2009@gmail.com →</a>
